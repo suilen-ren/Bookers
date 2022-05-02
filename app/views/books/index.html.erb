@@ -1,0 +1,88 @@
+<p id ="notice">
+  <%= flash[:destroy_successfully] %>
+</p>
+
+<%# ここからインデックス作る予定%>
+
+<h1>Books</h1>
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Body</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+  <% @books.each do |book| %>
+    <tbody>
+      <tr>
+        <td><%= book.title %></td>
+        <td><%= book.body %></td>
+        <td><%= link_to "Show", "/books/#{book.id}" %></td>
+        <td><%= link_to "Edit", "/books/#{book.id}/edit" %></td>
+        <td><%= link_to "Destroy", destroy_book_path(book[:id]), method: :delete,"data-confirm" => "Are you sure?" %></td>
+      </tr>
+    </tbody>
+  <% end %>
+</table>
+
+
+<%# ここから投稿フォームの作成%>
+<h2>New book</h2>
+
+<% if @book.errors.any? %> <%# 以下エラー分が表示された時のやつ。%>
+  <div class ="error_msgs_form">
+    <div class ="error_msgs_main">
+        <% if @book.errors.count == 1%>
+          <h2> 1 error prohibited this book from being saved.</h2>
+        <% else %>
+          <h2> 2 errors prohibited this book from being saved.</h2>
+        <% end %>
+    </div>
+
+    <ul class ="error_msgs_detail">
+      <% @book.errors.full_messages.each do |message| %>
+        <li> <%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+
+
+
+  <%= form_with model: @book do |f| %>
+    <div class ="field_with_errors">
+      <label for ="book_title">Title</label>
+      <%= f.text_field :title %>
+    </div>
+
+    <div class ="field_with_errors">
+      <label for ="book_body">Body</label>
+      <%= f.text_area :body %>
+    </div>
+
+    <div class ="action">
+      <%= f.submit 'Create Book' %>
+    </div>
+  <% end %>
+
+
+
+<% else %>
+  <%= form_with model: @book do |f| %> <%#　デフォルトの表示の際に使うもの %>
+    <div class ="field">
+      <label for ="book_title">Title</label>
+      <%= f.text_field :title %>
+    </div>
+
+    <div class ="field">
+      <label for ="book_body">Body</label>
+      <%= f.text_area :body %>
+    </div>
+
+    <div class ="action">
+      <%= f.submit 'Create Book' %>
+    </div>
+  <% end %>
+<% end %>
